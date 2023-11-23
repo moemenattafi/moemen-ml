@@ -1,0 +1,83 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask File Upload</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+        }
+
+        select {
+            margin-top: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+        <div class="drop-zone" id="drop-zone">
+            <p>Drag & Drop or click to select a file</p>
+            <input type="file" name="file" id="file-input" accept=".wav">
+        </div>
+        <select name="model">
+            <option value="svm">SVM</option>
+            <!-- Add more models if needed -->
+        </select>
+        <button type="submit">Submit</button>
+        <div id="result"></div>
+    </form>
+
+    <script>
+        // Add JavaScript for drag-and-drop functionality
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const resultDiv = document.getElementById('result');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.border = '2px dashed #4CAF50';
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.border = '2px dashed #ccc';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.border = '2px dashed #ccc';
+            const file = e.dataTransfer.files[0];
+            fileInput.files = e.dataTransfer.files;
+            resultDiv.innerHTML = `File selected: ${file.name}`;
+        });
+
+        fileInput.addEventListener('change', () => {
+            resultDiv.innerHTML = `File selected: ${fileInput.files[0].name}`;
+        });
+    </script>
+</body>
+</html>
