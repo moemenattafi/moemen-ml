@@ -75,30 +75,35 @@ fileInput.addEventListener('change', () => {
     resultDiv.innerHTML = `File selected: ${fileInput.files[0].name}`;
 });
 
-function submitForm(e){
-  var form=document.getElementById('fileForm');
-  var resultDiv=document.getElementById('resultDiv');
-  //to prevent the app from redirecting to an /predict endpoint
-  e.preventDefault();
+function submitForm(e) {
+    var form = document.getElementById('fileForm');
+    var resultDiv = document.getElementById('resultDiv');
+    //to prevent the app from redirecting to a /predict endpoint
+    e.preventDefault();
 
-  var formData=new FormData(form)
-  console.log("🚀 ~ file: index.html:85 ~ submitForm ~ form:", form)
-  $.ajax({
-    type:"POST",
-    url:"/predict",
-    data:formData,
-    contentType:false,
-    processData:false,
-    success: function(response){
-      resultDiv.innerHTML='Prediction Result :'+ response.prediction;
-    },
-    error: function(error){
-      console.log('Error Predecting :'+ error);
-      resultDiv.innerHTML="Error predicting. Try again.";
+    var formData = new FormData(form);
+    var selectedModel = document.querySelector('select[name="model"]').value;
+
+    var url = "/predict";
+    if (selectedModel === "vgg19") {
+        url = "/predict_genre";
     }
-  });
-}
 
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            resultDiv.innerHTML = 'Prediction Result: ' + response.prediction;
+        },
+        error: function(error) {
+            console.log('Error Predicting: ' + error);
+            resultDiv.innerHTML = "Error predicting. Try again.";
+        }
+    });
+}
     </script>
 </body>
 </html>

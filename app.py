@@ -3,17 +3,18 @@ import tenserflow as tf
 import joblib
 import librosa
 import numpy as np
+import io
 
 app = Flask(__name__)
 
 # Load the trained model
 model = joblib.load("svm_model.joblib")
-model = tf.keras.models.load_model('best_model.h5')
+model_vgg = tf.keras.models.load_model('best_model.h5')
 
 # Function to extract features from an audio file
-def extract_mel_spectrogram(audio_data, sample_rate):
+def extract_mel_spectrogram(audio_data):
     try:
-        audio, sr = librosa.load(io.BytesIO(audio_data), sr=sample_rate, res_type='kaiser_fast')
+        audio, sr = librosa.load(audio_data, res_type='kaiser_fast')
         mel_spectrogram = librosa.feature.melspectrogram(y=audio, sr=sr, n_mels=128)
         mel_spectrogram = librosa.power_to_db(mel_spectrogram, ref=np.max)
         return mel_spectrogram
@@ -31,17 +32,20 @@ def preprocess_mel_spectrogram(mel_spectrogram):
 def predict_genre():
     try:
         # Get the audio data from the request
-        audio_data = request.files['file'].read()
-        sample_rate = int(request.form['sample_rate'])  # Assuming sample_rate is included in the form data
+        audio_data = request.files['file']
+
+        # Save the file temporarily
+        file_path = "vgg16.wav"
+        audio_data.save(file_path)
 
         # Extract mel spectrogram from the audio data
-        mel_spectrogram = extract_mel_spectrogram(audio_data, sample_rate)
+        mel_spectrogram = extract_mel_spectrogram(file_path)
 
         # Preprocess mel spectrogram for VGG16 model
         input_data = preprocess_mel_spectrogram(mel_spectrogram)
 
         # Make a prediction using the VGG16 model
-        prediction = model.predict(input_data)
+        prediction = model_vgg.predict(input_data)
 
         # Get the predicted genre
         predicted_genre = get_genre_from_label(np.argmax(prediction))
