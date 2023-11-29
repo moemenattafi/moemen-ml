@@ -10,6 +10,9 @@ scikit-learn = "*"
 joblib = "*"
 numpy = "*"
 pysoundfile = "*"
+torch = "==1.10.0"
+torchvision==0.11.1
+tensorflow==2.7.0
 
 [dev-packages]
 
