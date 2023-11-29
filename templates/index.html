@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-    <form action="/predict" method="post" enctype="multipart/form-data">
+    <form action="/predict" onsubmit="submitForm(event)" method="post" enctype="multipart/form-data">
         <div class="drop-zone" id="drop-zone">
             <p>Drag & Drop or click to select a file</p>
             <input type="file" name="file" id="file-input" accept=".wav">
@@ -75,19 +75,22 @@ fileInput.addEventListener('change', () => {
     resultDiv.innerHTML = `File selected: ${fileInput.files[0].name}`;
 });
 
-function submitForm(){
+function submitForm(e){
   var form=document.getElementById('fileForm');
   var resultDiv=document.getElementById('resultDiv');
+  //to prevent the app from redirecting to an /predict endpoint
+  e.preventDefault();
 
   var formData=new FormData(form)
+  console.log("🚀 ~ file: index.html:85 ~ submitForm ~ form:", form)
   $.ajax({
     type:"POST",
     url:"/predict",
     data:formData,
     contentType:false,
     processData:false,
-    sucess: function(response){
-      resultDiv.innerHTML='Prediction Result'+ response.result;
+    success: function(response){
+      resultDiv.innerHTML='Prediction Result :'+ response.prediction;
     },
     error: function(error){
       console.log('Error Predecting :'+ error);

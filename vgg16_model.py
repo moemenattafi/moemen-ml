@@ -25,7 +25,7 @@ data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
 )
 
 # Load training and validation data
-path = '../input/gtzan-dataset-music-genre-classification/Data/images_original'
+path = './data/images_original'
 train_datagen = data_gen.flow_from_directory(
     path, target_size=(300, 300), batch_size=32, class_mode='categorical', subset='training'
 )

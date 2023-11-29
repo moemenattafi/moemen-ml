@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.8
+FROM python:3.9
 
 # Set the working directory in the container
 WORKDIR /app
@@ -25,7 +25,7 @@ EXPOSE 5000
 
 # Define environment variable
 ENV LIBROSA_HINT=libsndfile
-RUN ["python", "./script.py"]
+RUN ["pipenv","run","python", "./vgg16_model.py"]
 
 # Run app.py when the container launches
 CMD ["pipenv", "run", "python", "app.py"]
