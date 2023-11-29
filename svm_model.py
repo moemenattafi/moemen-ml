@@ -23,7 +23,7 @@ def extract_features(file_path):
 def load_dataset(data_path):
     labels = []
     features = []
-    genres = os.listdir(data_path)
+    genres= os.listdir(data_path)
 
     for genre in genres:
         genre_path = os.path.join(data_path, genre)
@@ -39,7 +39,7 @@ def load_dataset(data_path):
     return np.array(features), np.array(labels)
 
 # Load dataset
-data_path = "./../data/genres_original/Data"  # Replace with the actual path to your dataset
+data_path = "./data/genres_original/"  # Replace with the actual path to your dataset
 X, y = load_dataset(data_path)
 
 # Split the dataset into training and testing sets
@@ -58,3 +58,5 @@ print(f"Accuracy: {accuracy}")
 model_filename = "svm_model.joblib"
 joblib.dump(model, model_filename)
 print(f"Model saved to {model_filename}")
+
+

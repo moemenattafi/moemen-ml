@@ -1,4 +1,3 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,36 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flask File Upload</title>
-
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
 
-        form {
-            text-align: center;
-        }
+    form {
+        text-align: center;
+    }
 
-        .drop-zone {
-            border: 2px dashed #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            cursor: pointer;
-        }
+    .drop-zone {
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        cursor: pointer;
+    }
 
-        select {
-            margin-top: 10px;
-        }
+    select {
+        margin-top: 10px;
+    }
 
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
+    #result {
+        margin-top: 20px;
+        font-weight: bold;
+    }
     </style>
 </head>
 <body>
@@ -46,38 +44,58 @@
         </div>
         <select name="model">
             <option value="svm">SVM</option>
-            <!-- Add more models if needed -->
+            <option value="vgg19">VGG19</option>
         </select>
         <button type="submit">Submit</button>
-        <div id="result"></div>
+        <div id="resultDiv"></div>
     </form>
+    <script >
+      const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+const resultDiv = document.getElementById('result');
 
-    <script>
-        // Add JavaScript for drag-and-drop functionality
-        const dropZone = document.getElementById('drop-zone');
-        const fileInput = document.getElementById('file-input');
-        const resultDiv = document.getElementById('result');
+dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.style.border = '2px dashed #4CAF50';
+});
 
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.style.border = '2px dashed #4CAF50';
-        });
+dropZone.addEventListener('dragleave', () => {
+    dropZone.style.border = '2px dashed #ccc';
+});
 
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.style.border = '2px dashed #ccc';
-        });
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.style.border = '2px dashed #ccc';
+    const file = e.dataTransfer.files[0];
+    fileInput.files = e.dataTransfer.files;
+    resultDiv.innerHTML = `File selected: ${file.name}`;
+});
 
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.style.border = '2px dashed #ccc';
-            const file = e.dataTransfer.files[0];
-            fileInput.files = e.dataTransfer.files;
-            resultDiv.innerHTML = `File selected: ${file.name}`;
-        });
+fileInput.addEventListener('change', () => {
+    resultDiv.innerHTML = `File selected: ${fileInput.files[0].name}`;
+});
 
-        fileInput.addEventListener('change', () => {
-            resultDiv.innerHTML = `File selected: ${fileInput.files[0].name}`;
-        });
+function submitForm(){
+  var form=document.getElementById('fileForm');
+  var resultDiv=document.getElementById('resultDiv');
+
+  var formData=new FormData(form)
+  $.ajax({
+    type:"POST",
+    url:"/predict",
+    data:formData,
+    contentType:false,
+    processData:false,
+    sucess: function(response){
+      resultDiv.innerHTML='Prediction Result'+ response.result;
+    },
+    error: function(error){
+      console.log('Error Predecting :'+ error);
+      resultDiv.innerHTML="Error predicting. Try again.";
+    }
+  });
+}
+
     </script>
 </body>
 </html>
