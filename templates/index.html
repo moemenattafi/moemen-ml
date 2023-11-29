@@ -44,12 +44,15 @@
         </div>
         <select name="model">
             <option value="svm">SVM</option>
-            <option value="vgg19">VGG19</option>
+            <option value="vgg16">VGG16</option>
         </select>
         <button type="submit">Submit</button>
         <div id="resultDiv"></div>
     </form>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <script >
+
       const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-input');
 const resultDiv = document.getElementById('result');
@@ -76,16 +79,17 @@ fileInput.addEventListener('change', () => {
 });
 
 function submitForm(e) {
-    var form = document.getElementById('fileForm');
+    var form = document.querySelector('form');
     var resultDiv = document.getElementById('resultDiv');
     //to prevent the app from redirecting to a /predict endpoint
     e.preventDefault();
 
+    console.log("🚀 ~ file: index.html:85 ~ submitForm ~ form:", form)
     var formData = new FormData(form);
     var selectedModel = document.querySelector('select[name="model"]').value;
 
     var url = "/predict";
-    if (selectedModel === "vgg19") {
+    if (selectedModel === "vgg16") {
         url = "/predict_genre";
     }
 

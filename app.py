@@ -1,5 +1,5 @@
 from flask import Flask, request,render_template, jsonify
-import tenserflow as tf
+import tensorflow as tf
 import joblib
 import librosa
 import numpy as np
@@ -43,12 +43,15 @@ def predict_genre():
 
         # Preprocess mel spectrogram for VGG16 model
         input_data = preprocess_mel_spectrogram(mel_spectrogram)
-
+        print("Input shape:", input_data.shape)
+        print("Input data type:", input_data.dtype)
         # Make a prediction using the VGG16 model
         prediction = model_vgg.predict(input_data)
+        print("🚀 ~ file: app.py:49 ~ prediction:", prediction)
 
         # Get the predicted genre
         predicted_genre = get_genre_from_label(np.argmax(prediction))
+        print("🚀 ~ file: app.py:56 ~ predicted_genre:", predicted_genre)
 
         # Return the result as JSON
         result = {'prediction': predicted_genre}

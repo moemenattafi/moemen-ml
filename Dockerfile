@@ -25,7 +25,7 @@ EXPOSE 5000
 
 # Define environment variable
 ENV LIBROSA_HINT=libsndfile
-RUN ["pipenv","run","python", "./vgg16_model.py"]
+#RUN ["pipenv","run","python", "./vgg16_model.py"]
 
 # Run app.py when the container launches
 CMD ["pipenv", "run", "python", "app.py"]

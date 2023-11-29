@@ -42,7 +42,7 @@ model_final = tf.keras.layers.Dense(10, activation='softmax')(model_final)
 model = tf.keras.models.Model(model.input, model_final)
 
 # Compile the model with Adam optimizer and categorical crossentropy loss
-model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['acc'])
+model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
 
 # ModelCheckpoint callback to save the best weights
 checkpoint = ModelCheckpoint('best_model.h5', monitor='val_loss', save_best_only=True, mode='min', verbose=1)
