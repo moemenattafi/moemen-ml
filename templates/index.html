@@ -13,6 +13,8 @@
         justify-content: center;
         height: 100vh;
         margin: 0;
+
+
     }
 
     form {
@@ -36,10 +38,10 @@
     }
     </style>
 </head>
-<body>
+<body  style="background-color: #87CEEB;">
     <form action="/predict" onsubmit="submitForm(event)" method="post" enctype="multipart/form-data">
         <div class="drop-zone" id="drop-zone">
-            <p>Drag & Drop or click to select a file</p>
+            <p>🎵 Pick a sound to predict 🎵</p>
             <input type="file" name="file" id="file-input" accept=".wav">
         </div>
         <select name="model">

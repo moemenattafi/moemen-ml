@@ -10,9 +10,6 @@ scikit-learn = "*"
 joblib = "*"
 numpy = "*"
 pysoundfile = "*"
-django = "*"
-tensorflow = "*"
-pillow = "*"
 
 [dev-packages]
 
